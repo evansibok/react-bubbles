@@ -41,10 +41,6 @@ const ColorList = ({ colors, updateColors, getColors }) => {
       .catch(err => (console.error(err.message)))
   };
 
-  const newColorChange = color => {
-    setColorForm(color)
-  }
-
   const addColor = evt => {
     evt.preventDefault();
 
@@ -62,7 +58,7 @@ const ColorList = ({ colors, updateColors, getColors }) => {
       <p>colors</p>
       <ul>
         {colors.map(color => (
-          <li key={color.color} onClick={() => editColor(color)}>
+          <li key={color.id} onClick={() => editColor(color)}>
             <span>
               <span className="delete" onClick={e => {
                 e.stopPropagation();
@@ -111,7 +107,6 @@ const ColorList = ({ colors, updateColors, getColors }) => {
           </div>
         </form>
       )}
-      <div className="spacer" />
       {/* stretch - build another form here to add a color */}
       <form onSubmit={addColor}>
         <label>
@@ -120,7 +115,7 @@ const ColorList = ({ colors, updateColors, getColors }) => {
             type="text"
             name="color"
             value={colorForm.color}
-            onChange={evt => newColorChange({ ...colorForm, color: evt.target.value })} />
+            onChange={evt => setColorForm({ ...colorForm, color: evt.target.value })} />
         </label>
         <label>
           Hex Code:
@@ -128,11 +123,13 @@ const ColorList = ({ colors, updateColors, getColors }) => {
             type="text"
             name="hex"
             value={colorForm.code.hex}
-            onChange={evt => newColorChange({ ...colorForm, code: { hex: evt.target.value } })}
+            onChange={evt => setColorForm({ ...colorForm, code: { hex: evt.target.value } })}
           />
         </label>
         <button>Add Color</button>
       </form>
+      <div className="spacer" />
+
     </div>
   );
 };

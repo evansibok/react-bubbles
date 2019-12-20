@@ -8,21 +8,19 @@ import BubblePage from "./components/BubblePage";
 
 function App() {
   return (
-      <div className="App">
-        <Route exact path="/" component={Login} />
+    <div className="App">
+      <Route exact path="/" component={Login} />
 
-        <PrivateRoute
-          path="/bubbles"
-          component={BubblePage}
-        />
-      </div>
+      <Route 
+        exact
+        path="/bubbles"
+        render={props => withAuthCheck(BubblePage, props)}
+      />
+    </div>
   );
 }
 
-const PrivateRoute = ({ component: Component, props }) => (
-  <Route
-    {...props}
-    render={props => localStorage.getItem("token") ? (<Component {...props} />) : (<Redirect to="/" />)}
-  />
-)
+function withAuthCheck(Component, props) {
+  return localStorage.getItem("token") ? <Component {...props} /> : <Redirect to="/" />
+}
 export default withRouter(App);
